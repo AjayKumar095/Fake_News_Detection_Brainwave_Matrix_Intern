@@ -18,4 +18,3 @@ flask
 
 # DevOps
 gunicorn
-mlflow
