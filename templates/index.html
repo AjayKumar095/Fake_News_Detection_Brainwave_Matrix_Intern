@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #e9ecef;
+            display: none;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <header class="bg-dark text-white text-center py-3">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="ms-2" viewBox="0 0 16 16"> 
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+        <h1 class="d-inline">TruthLens</h1>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-10">
+                    <div class="card">
+                        <h4 class="text-center mb-3">Text Classification</h4>
+                        <form id="classificationForm">
+                            <div class="mb-3">
+                                <label for="inputText" class="form-label">Enter Text:</label>
+                                <textarea class="form-control" id="inputText" rows="4" placeholder="Type here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Submit</button>
+                        </form>
+                        <div id="resultBox" class="result-box text-center mt-3">
+                            <h5>Classification Result:</h5>
+                            <p id="resultText" class="fw-bold text-primary"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <p class="mb-0">&copy; 2025 TruthLens</p>
+    </footer>
+
+    <script>
+        document.getElementById("classificationForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            let text = document.getElementById("inputText").value;
+            let resultBox = document.getElementById("resultBox");
+            let resultText = document.getElementById("resultText");
+            let probabilityText = document.getElementById("probabilityText");
+            
+            if (text.trim() === "") {
+                resultText.textContent = "Please enter text to classify.";
+                probabilityText.textContent = "";
+                resultBox.style.display = "block";
+                return;
+            }
+            
+            try {
+                let response = await fetch("/newsclassification", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ text: text })
+                });
+                
+                let data = await response.json();
+                resultText.textContent = `Label: ${data.label}`;
+                resultBox.style.display = "block";
+            } catch (error) {
+                resultText.textContent = "Error fetching classification result.";
+                resultBox.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

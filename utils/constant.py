@@ -13,3 +13,6 @@ TEST_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Test_Dataset
 
 MODEL_OBJECTS = os.path.join(os.getcwd(), "Models", "models_objects")
 MODEL_REPORTS = os.path.join(os.getcwd(), "Models", "reports")
+
+MODEL_PATH = os.path.join(os.getcwd(), "Models", "models_objects", "best_model.pkl")
+VECTORIZER_PATH = os.path.join(os.getcwd(), "Models", "models_objects", "vectorizer.pkl")
