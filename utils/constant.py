@@ -9,3 +9,7 @@ RAW_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Fake_News_Det
 
 TRAINING_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Training_Dataset.csv")
 TEST_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Test_Dataset.csv")
+
+
+MODEL_OBJECTS = os.path.join(os.getcwd(), "Models", "models_objects")
+MODEL_REPORTS = os.path.join(os.getcwd(), "Models", "reports")
