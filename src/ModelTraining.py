@@ -99,6 +99,6 @@ def initiate_training( X_train_tfidf, X_test_tfidf, y_train, y_test):
             
     except Exception as e:  
         logging.error(f"Error in training the model: {e}")
-        return None    
+        return None   
 
 

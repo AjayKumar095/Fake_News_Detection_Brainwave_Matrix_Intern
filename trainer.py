@@ -9,8 +9,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from ETL_Pipeline.load import load_data
 from utils.logger import logging
+from src.ModelTraining import initiate_training
 
 if __name__=="__main__":
     X_train_TF, X_test_TF, y_train, y_test=load_data()
     logging.info(f"Training and test data loaded successfully: {X_train_TF.shape}, {X_test_TF.shape}, {y_train.shape}, {y_test.shape}")
     
+    logging.info("Initiating the training process")
+    response = initiate_training(X_train_TF, X_test_TF, y_train, y_test)
+    logging.info(response)
