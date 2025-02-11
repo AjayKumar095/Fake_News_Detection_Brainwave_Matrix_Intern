@@ -25,9 +25,10 @@ def classify_text():
     vectorizer = load_vectorizer()
     text_vector = vectorizer.transform([text])
     result = model.predict(text_vector)
+    print(result)
     labels = {0: 'Fake News', 1: 'Real News'}
     
-    return jsonify({"label": labels[result]})
+    return jsonify({"label": labels[result[0]]})
 
 if __name__=="__main__":
     app.run(debug=True)
