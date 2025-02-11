@@ -1,4 +1,3 @@
-
 ## Add the parent directory to the path so that the logger can be imported from the parent directory
 import os
 import sys 

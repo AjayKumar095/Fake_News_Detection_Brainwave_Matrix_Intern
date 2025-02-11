@@ -9,7 +9,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from utils.logger import logging
 from utils import constant as const
-from sklearn.svm import SVC
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import RandomizedSearchCV
@@ -25,9 +25,9 @@ models = {
         "model": RandomForestClassifier(),
         "params": {"n_estimators": [50, 100, 200], "max_depth": [5, 10, 20]}
     },
-    "SVM": {
-        "model": SVC(),
-        "params": {"C": [0.1, 1, 10], "kernel": ["linear", "rbf"]}
+    "Multinomial Naive Bayes": {
+        "model": MultinomialNB(),
+        "params": {"alpha": [0.1, 0.5, 1.0]}
     }
 }
 
@@ -40,7 +40,7 @@ def initiate_training( X_train_tfidf, X_test_tfidf, y_train, y_test):
         best_models = {}
         best_f1 = 0
         best_model_name = None
-
+        models_accuracy = {}
 
         for name, config in models.items():
             print(f"\n🔍 Training {name}...")
@@ -69,20 +69,14 @@ def initiate_training( X_train_tfidf, X_test_tfidf, y_train, y_test):
             train_acc = accuracy_score(y_train, y_train_pred)
             test_acc = accuracy_score(y_test, y_test_pred)
             report = classification_report(y_test, y_test_pred, output_dict=True)
-
+            
+            models_accuracy[name] = { 'Train Accuracy': train_acc, 'Test Accuracy': test_acc }
+            logging.info(f"Model_accuracy: {models_accuracy[name]}")
+            
             # Save classification report
             report_df = pd.DataFrame(report).transpose()
             report_df.to_csv(f"{model_folder}/classification_report.csv")
 
-            # Save confusion matrix
-            cm = confusion_matrix(y_test, y_test_pred)
-            plt.figure(figsize=(6, 4))
-            sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
-            plt.xlabel("Predicted")
-            plt.ylabel("Actual")
-            plt.title(f"Confusion Matrix - {name}")
-            plt.savefig(f"{model_folder}/confusion_matrix.png")
-            plt.close()
 
             # Track best model based on F1-score
             f1_score = report["weighted avg"]["f1-score"]
@@ -91,11 +85,12 @@ def initiate_training( X_train_tfidf, X_test_tfidf, y_train, y_test):
                 best_model_name = name
 
             # Save the trained model
-    
-            joblib.dump(best_model, f"{model_folder}/best_model.pkl")
+            joblib.dump(models_accuracy, f"{model_folder}/models_accuracy.txt")
+            joblib.dump(best_model, f"{const.MODEL_OBJECTS}/best_model.pkl")
             logging.info(f"Model trained successfully: {name}")
             logging.info(f"\n✅ Best Model Selected: {best_model_name} with F1-score {best_f1}")
-            return best_models[best_model_name]
+            
+        return best_models[best_model_name]
             
     except Exception as e:  
         logging.error(f"Error in training the model: {e}")

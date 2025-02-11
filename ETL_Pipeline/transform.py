@@ -10,7 +10,8 @@ import pickle as pkl
 from utils.logger import logging
 from nltk.corpus import stopwords
 from utils import constant as const
-from extract import extract_data
+from ETL_Pipeline.extract import extract_data
+#from extract import extract_data
 from nltk.tokenize import word_tokenize
 from nltk.stem.wordnet import WordNetLemmatizer
 from sklearn.model_selection import train_test_split
@@ -36,12 +37,11 @@ class DataTransformer:
 
     def transform_data(self):
         try :
-            logging.info("Transforming the data")
             self.data = self.__clean_data()
             if self.data is None:
                 return None
             # Vectorize the text data
-            
+            logging.info("Transforming the data")
             X_train, X_test, y_train, y_test = train_test_split(self.data['text'],
                                                                 self.data['traget'],
                                                                 test_size=0.2, random_state=42)
