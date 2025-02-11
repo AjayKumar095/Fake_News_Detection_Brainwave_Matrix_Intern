@@ -7,3 +7,5 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ## constant variables
 RAW_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Fake_News_Detection_Dataset.csv")
 
+TRAINING_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Training_Dataset.csv")
+TEST_DATA_PATH = os.path.join(os.getcwd(), "Artifacts", "Dataset", "Test_Dataset.csv")
