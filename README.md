@@ -49,7 +49,7 @@ python app.py
 Go to: `http://127.0.0.1:5000/`
 
 ## Project Screenshots
-![Flask UI](../Artifacts\ProjectDocs\flaskUI.png)
+![Flask UI](/Artifacts/ProjectDocs/flaskUI.png)
 
 ## Author
 - **Ajay Kumar**  
